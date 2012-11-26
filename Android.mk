@@ -1,4 +1,4 @@
-ifeq ($(SOMC_CFG_DASH_INCLUDED),true)
+ifeq ($(SOMC_CFG_DASH_INCLUDED),yes)
 
 LOCAL_PATH := $(call my-dir)
 
