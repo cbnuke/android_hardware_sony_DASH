@@ -17,6 +17,7 @@
 #define ACCURACY_HIGH_TH 110
 #define ACCURACY_MEDIUM_TH 130
 #define ACCURACY_LOW_TH 150
+#define LSM303DLH_H_8_1G 0xE0
 
 static int ecompass_init(struct sensor_api_t *s);
 static int ecompass_activate(struct sensor_api_t *s, int enable);
