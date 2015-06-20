@@ -148,6 +148,7 @@ endif
 # eCompass, Magnetometer
 #
 ifneq ($(SOMC_CFG_SENSORS_GYRO_L3G4200D),yes)
+$(yes-var-compass-lsm303dlh)-files += lsm303dlhx_mag.c
 $(yes-var-compass-lsm303dlh)-files += wrappers/lsm303dlhx_compass.c
 $(yes-var-compass-lsm303dlh)-static-libs += libLSM303DLH
 $(yes-var-compass-lsm303dlh)-cflags += -I$(LOCAL_PATH)/libs/lsm303dlh \
