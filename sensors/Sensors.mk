@@ -67,14 +67,19 @@ $(yes-var-compass-ak896xna)-files += ak896xna.c wrappers/ak896xna_sensors.c
 #
 # Light sensors
 #
-
-$(SOMC_CFG_SENSORS_LIGHT_AS3676)-files += as3676_als.c
+$(SOMC_CFG_SENSORS_LIGHT_AS3676)-files += as367x_als.c
 $(SOMC_CFG_SENSORS_LIGHT_AS3676)-cflags += \
-    -DLIGHT_RANGE=$(if $(SOMC_CFG_SENSORS_LIGHT_AS3676_MAXRANGE),$(SOMC_CFG_SENSORS_LIGHT_AS3676_MAXRANGE),4900)
+    -DAS3676 \
+    -DALS_CHIP_NAME="\"AS3676\"" \
+    -DALS_CHIP_MAXRANGE=$(if $(SOMC_CFG_SENSORS_LIGHT_MAXRANGE),$(SOMC_CFG_SENSORS_LIGHT_MAXRANGE),12276) \
+    -DALS_PATH=\"$(SOMC_CFG_SENSORS_LIGHT_AS3676_PATH)\"
 
-ifneq ($(SOMC_CFG_SENSORS_LIGHT_AS3676_PATH),)
-$(SOMC_CFG_SENSORS_LIGHT_AS3676)-cflags += -DALS_PATH=\"$(SOMC_CFG_SENSORS_LIGHT_AS3676_PATH)\"
-endif
+$(SOMC_CFG_SENSORS_LIGHT_AS3677)-files += as367x_als.c
+$(SOMC_CFG_SENSORS_LIGHT_AS3677)-cflags += \
+    -DAS3677 \
+    -DALS_CHIP_NAME="\"AS3677\"" \
+    -DALS_CHIP_MAXRANGE=$(if $(SOMC_CFG_SENSORS_LIGHT_MAXRANGE),$(SOMC_CFG_SENSORS_LIGHT_MAXRANGE),12276) \
+    -DALS_PATH=\"$(SOMC_CFG_SENSORS_LIGHT_AS3677_PATH)\"
 
 $(SOMC_CFG_SENSORS_LIGHT_LM3533)-files += lm3533_als.c
 
@@ -127,6 +132,11 @@ $(SOMC_CFG_SENSORS_GYRO_L3G4200D)-files += l3g4200d_gyro.c \
 $(SOMC_CFG_SENSORS_GYRO_L3G4200D)-cflags += -DGYRO_L3G4200D_INPUT
 $(SOMC_CFG_SENSORS_GYRO_L3G4200D)-var-xyz = yes
 
+$(SOMC_CFG_SENSORS_GYRO_L3GD20)-files += l3gd20_gyro.c \
+					 wrappers/l3gd20_gyroscope.c
+$(SOMC_CFG_SENSORS_GYRO_L3GD20)-cflags += -DGYRO_L3GD20_INPUT
+$(SOMC_CFG_SENSORS_GYRO_L3GD20)-var-xyz = yes
+
 #
 # Wrapper sensors
 #
@@ -148,12 +158,15 @@ endif
 # eCompass, Magnetometer
 #
 ifneq ($(SOMC_CFG_SENSORS_GYRO_L3G4200D),yes)
+ifneq ($(SOMC_CFG_SENSORS_GYRO_L3GD20),yes)
 $(yes-var-compass-lsm303dlh)-files += lsm303dlhx_mag.c
 $(yes-var-compass-lsm303dlh)-files += wrappers/lsm303dlhx_compass.c
 $(yes-var-compass-lsm303dlh)-static-libs += libLSM303DLH
 $(yes-var-compass-lsm303dlh)-cflags += -I$(LOCAL_PATH)/libs/lsm303dlh \
 				       -DLSM303DLHC
 endif
+endif
+
 #
 # Shared files
 #
